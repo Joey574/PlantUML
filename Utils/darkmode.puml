@@ -1,0 +1,32 @@
+@startuml darkmode
+skinparam backgroundColor #1e1e1e
+skinparam defaultFontColor #e6e6e6
+skinparam classBackgroundColor #2b2b2b
+skinparam classBorderColor #3f3f3f
+skinparam classFontColor #f0f0f0
+skinparam packageBorderColor transparent
+skinparam packageBackgroundColor transparent
+skinparam packageFontColor #E6E6E6
+skinparam noteBackgroundColor #2f2f2f
+skinparam noteBorderColor #444444
+skinparam noteFontColor #f0f0f0
+
+<style>
+arrow {
+  LineColor #E6E6E6
+  FontColor #E6E6E6
+}
+</style>
+
+skinparam enum {
+  BackgroundColor #2b2b2b
+  BorderColor #3f3f3f
+  FontColor #f0f0f0
+}
+
+skinparam struct {
+  BackgroundColor #2b2b2b
+  BorderColor #3f3f3f
+  FontColor #f0f0f0
+}
+@enduml

@@ -1,0 +1,55 @@
+@startuml Layer
+package "Layer" {
+    struct Layer {
+        - layerType : LayerType
+
+        - activation : Activation
+        - lossMetric : LossMetric
+        - optimizer : Optimizer
+
+        - weights : Tensor<float>
+        - biases : Tensor<float>
+
+        - nodes : size_t
+        - inputNodes : size_t
+        - outputNodes : size_t
+
+        - layerBytes : size_t
+        - parameters : size_t
+
+
+        + LayerType() const : LayerType
+
+        + Define(YAML::Node& config, YAML::Node& optimizerConfig, size_t inputNodes, size_t nextNodes) : void
+        
+        + Initialize() : void
+        + InitializeSizes(size_t batchSize, size_t testSize) : void
+        + InitializeWeights()
+
+        + SetDataPointers(char* data, char* batchData, char* testData, size_t batchSize, size_t testSize) : void
+        + SetFunctionPointers() : void
+
+
+        {static} + ParseType(const string& name) : LayerType
+        {static} + ParseName(LayerType type) : string
+    } 
+
+    enum LayerType {
+        None
+        Input
+        Hidden
+        Output
+    }
+
+    enum WeightInitialization {
+        None
+        He
+        Normalize
+        Xavier
+    }
+
+    Layer -l-* LayerType
+    Layer -r-* WeightInitialization
+}
+
+@enduml

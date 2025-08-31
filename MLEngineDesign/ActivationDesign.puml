@@ -1,0 +1,64 @@
+@startuml Activation
+package "Activation" {
+    struct Activation {
+        - type : ActivationType
+
+        + Activation(ActivationType type = ActivationType::None)
+
+        + ApplyActivation(const Tensor<float>& x, Tensor<float>& y) : void
+        + ApplyDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        
+        + <<inline>> ActivationType() const : ActivationType
+
+        {static} + ParseType(const string& name) : ActivationType
+        {static} + ParseName(ActivationType type) : string
+
+        {static} - Linear(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - Sigmoid(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - ReLU(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - LeakyReLU(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - ELU(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - Softmax(const Tensor<float>& x, Tensor<float>& y) : void
+
+        {static} - LinearDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - SigmoidDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - ReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - LeakyReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        {static} - ELUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+    }
+
+    enum ActivationType {
+        None
+        Linear
+        Sigmoid
+        ReLU
+        LeakyReLU
+        ELU
+        Softmax
+    }
+
+    note left of Activation
+        Activation is responsible for abstracting the
+        specifics of implementation for activation
+        and derivative functions, and should be
+        nearly stateless
+    end note
+
+
+    note left of Activation::Activation()
+        Initializes Activation with ActivationType::None
+    end note
+
+    note right of Activation::ApplyActivation
+        Function pointer to private static method that 
+        applies a given activation on x and stores it in y
+    end note
+
+    note right of Activation::ApplyDerivative
+        Function pointer to private static method that
+        multiplies y by the given derivative of x
+    end note
+
+    Activation --* ActivationType
+}
+@enduml

@@ -1,0 +1,19 @@
+@startuml ImageUtils
+struct ImageUtils {
+    {static} + tmp : vector<float>
+    {static} + uxs : vector<float>
+    {static} + uys : vector<float>
+
+    {static} + rng : mt19937
+
+    {static} + RotateImage(const Tensor<float>& image, Tensor<float>& rotated, float deg) : void
+    {static} + ScaleImage(const Tensor<float>& image, Tensor<float>& scaled, float scale) : void
+    {static} + ShearImage(const Tensor<float>& image, Tensor<float>& sheared, float shear) : void
+    {static} + ElasticDeformImage(const Tensor<float>& image, Tensor<float>& deformed, float alpha, float sigma) : void
+
+    {static} + MakeGaussianKernal1D(int rad, float sigma) : vector<float>
+
+    {static} + ConvolveHorizontal(Tensor<float>& out, const vector<float>& f, const vector<float>& k, int rad);
+    {static} + ConvolveVertical(Tensor<float>& out, const vector<float>& f, const vector<float>& k, int rad);
+}
+@enduml

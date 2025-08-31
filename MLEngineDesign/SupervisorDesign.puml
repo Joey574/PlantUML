@@ -1,0 +1,21 @@
+@startuml Supervisor
+package "Supervisor" {
+    struct Supervisor {
+
+        - model : NeuralNetwork*
+        - dataset : Dataset*
+
+        - config : YAML::Node*
+
+        + Supervisor()
+        + ~Supervisor()
+
+        + Define(YAML::Node& config) : void
+
+        + Load(const string& path, const string& name) : void
+        - Save(const string& path, const string& name) : void
+
+        + Train() : nlohmann::json
+    }
+}
+@enduml

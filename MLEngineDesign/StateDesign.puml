@@ -1,0 +1,58 @@
+@startuml State
+struct State {
+    - name : string
+    - supervisor : Supervisor*
+
+    - config : YAML::Node
+    - history : nlohmann::json
+
+    - workspacePath : string
+    - datasetPath : string
+    - modelPath : string
+
+    - path : string
+
+    + State()
+    + Start(int argc, char* argv[]) : int
+
+    - Load() : void
+    - Build() : void
+
+    - Train() : void
+
+    - InitializeSaveLocation() const : void
+
+    - ModelExists() const : bool
+    - IsValid() const : bool
+
+    {static} - ExpandPath(const string& path) : string
+    {static} - CreateDirectory(const string& path) : bool
+    {static} - DirectoryExists(const string& path) : bool
+    {static} - FileExists(const string& path) : bool
+}
+
+note right of State
+    State manages the high-level state
+    of the program, things like saving,
+    starting, and loading existing
+    saves are all done in here
+end note
+
+note right of State::Start
+    Where everything begins, parses CLI
+    and gets everything started
+end note
+
+note left of State::name
+    Unique name used for saving model
+end note
+
+note left of State::workspacePath
+    Contains the absolute file path for
+    the workspace, which contains saved
+    models and stored datasets, because
+    both of those are used often, those
+    paths are also saved as datasetsPath
+    and modelsPath
+end note
+@enduml

@@ -1,0 +1,58 @@
+@startuml LossMetric
+package "LossMetric" {
+    struct LossMetric {
+        - lossType : LossMetricType
+        - metricType : LossMetricType
+
+        + LossMetric(LossMetricType lossType = LossMetricType::None, LossMetricType metricType = LossMetricType::None)
+
+        + Loss(const Tensor<float>& predicted, const Tensor<float>& truth, Tensor<float>& out) : void
+        + Score(const Tensor<float>& predicted, const Tensor<float>& truth) : float
+
+        + <<inline>> LossType() const : LossMetricType
+        + <<inline>> MetricType() const : LossMetricType
+
+        {static} + ParseType(const string& name) : LossMetricType
+        {static} + ParseName(LossMetricType type) : string
+
+        {static} - MAELoss(const Tensor<float>& predicted, const Tensor<float>& truth, Tensor<float>& out) : void
+        {static} - MSELoss(const Tensor<float>& predicted, const Tensor<float>& truth, Tensor<float>& out) : void
+        {static} - OneHotLoss(const Tensor<float>& predicted, const Tensor<float>& truth, Tensor<float>& out) : void
+
+        {static} - MAEScore(const Tensor<float>& predicted, const Tensor<float>& truth) : float
+        {static} - MSEScore(const Tensor<float>& predicted, const Tensor<float>& truth) : float
+        {static} - AccuracyScore(const Tensor<float>& predicted, const Tensor<float>& truth) : float
+    }
+
+    enum LossMetricType {
+        None
+        MAE
+        MSE
+        Accuracy
+        OneHot
+    }
+
+    LossMetric --* LossMetricType
+
+    note right of LossMetric
+        LossMetric is responsible for abstracting away
+        the specifics of implementation for various
+        scoring and loss functions, and should be
+        nearly stateless
+    end note
+
+    note right of LossMetric::ApplyLoss
+        Function pointer to private static method, stores
+        the loss of predicted compared to truth in out
+    end note
+
+    note right of LossMetric::ApplyMetric
+        Function pointer to private static method, returns
+        the score of predicted compared to truth    
+    end note
+
+    note left of LossMetric::LossMetric()
+        Initializes LossMetric with LossMetricType::None
+    end note
+}
+@enduml

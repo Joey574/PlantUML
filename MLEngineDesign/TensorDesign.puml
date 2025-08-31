@@ -1,0 +1,15 @@
+@startuml Tensor
+struct "Tensor<T>" <<template>> {
+    - data : T*
+    - size : size_t
+
+    - dimensions : vector<size_t>
+    - stride : vector<size_t>
+
+    + Size() const : size_t
+    + Stride() const : vector<size_t>
+    + Dimensions() const : vector<size_t>
+
+    + ScaleBy(float a) : void
+}
+@enduml

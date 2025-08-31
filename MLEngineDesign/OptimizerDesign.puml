@@ -1,0 +1,109 @@
+@startuml Optimizer
+package "Optimizer" {
+    struct Optimizer {
+        using OptimizerVariant = variant<SGD, MomentumSGD, RMSProp, Adam>
+
+        - type : OptimizerType
+        - variant : OptimizerVariant
+
+        - learningRate : float
+
+        - weights : Tensor<float>*
+        - biases : Tensor<float>*
+
+        - derivativeWeights : Tensor<float>*
+        - derivativeBiases : Tensor<float>*
+
+        + Optimizer(OptimizerType type = OptimizerType::None)
+
+        + Define(YAML::Node& config) : void
+        + Update(size_t batchSize) const : void
+
+        + Save(ofstream& file) const : void
+        + Load(ifstream& file) : void
+
+        + OptimizerType() const : OptimizerType
+
+        {static} + SizeOfType(OptimizerType type, size_t weights, size_t biases) : size_t
+
+        {static} + ParseType(const string& name) : OptimizerType
+        {static} + ParseName(OptimizerType type) : string
+    }
+
+    enum OptimizerType {
+        None
+        SGD
+        MomentumSGD
+        RMSProp
+        Adam
+    }
+
+    struct SGD {
+        + Define(Yaml::Node& config) : void
+        + Update(size_t batchSize) : void
+    
+        {static} + SizeOfType(size_t weights, size_t biases) : size_t
+    }
+
+    struct MomentumSGD {
+        - momentumCoef : float
+
+        - momentumWeights : Tensor<float>
+        - momentumBiases : Tensor<float>
+
+
+        + Define(Yaml::Node& config) : void
+        + Update(size_t batchSize) : void
+    
+        {static} + SizeOfType(size_t weights, size_t biases) : size_t
+    }
+
+    struct RMSProp {
+        - decay : float
+        - epsl : float
+
+        - meanSquareWeights : Tensor<float>
+        - meanSquareBiases : Tensor<float>
+
+
+        + Define(Yaml::Node& config) : void
+        + Update(size_t batchSize) : void
+    
+        {static} + SizeOfType(size_t weights, size_t biases) : size_t
+    }
+
+    struct Adam {
+        - biasCorrection1 : float
+        - biasCorrection2 : float
+        - epsl : float
+
+        - timeStep : size_t
+
+        - firstMomentWeights : Tensor<float>
+        - firstMomentBiases : Tensor<float>
+
+        - secondMomentWeights : Tensor<float>
+        - secondMomentBiases : Tensor<float>
+
+
+        + Define(Yaml::Node& config) : void
+        + Update(size_t batchSize) : void
+    
+        {static} + SizeOfType(size_t nWeights, size_t nBiases) : size_t
+    }
+
+    Optimizer -r-* OptimizerType
+
+    Optimizer --> SGD
+    Optimizer --> MomentumSGD
+    Optimizer --> RMSProp
+    Optimizer --> Adam
+
+    note left of Optimizer
+        Responsible for 'optimizing' the weights and biases
+        of the network, uses std::variant to abstract the
+        specific data needed for the different
+        implementations 
+    end note
+}
+@enduml
