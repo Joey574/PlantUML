@@ -1,0 +1,38 @@
+@startuml MLEngineDesign
+!include StateDesign.puml
+!include SupervisorDesign.puml
+!include NeuralNetworkDesign.puml
+!include DatasetDesign.puml
+!include LayerDesign.puml
+!include OptimizerDesign.puml
+!include ActivationDesign.puml
+!include LossMetricDesign.puml
+
+!include MathUtilsDesign.puml
+!include ImageUtilsDesign.puml
+!include TensorDesign.puml
+
+
+top to bottom direction
+skinparam packageFontColor transparent
+skinparam packageBorderColor transparent
+skinparam packageBackgroundColor transparent
+skinparam packageShadowing false
+
+
+State --> Supervisor.Supervisor
+Supervisor.Supervisor --> NeuralNetwork
+Supervisor.Supervisor --> Dataset
+NeuralNetwork --> Layer.Layer
+
+Layer.Layer --> LossMetric.LossMetric
+Layer.Layer --> Activation.Activation
+Layer.Layer --> Optimizer.Optimizer
+
+note as NamingConventions
+Naming Conventions:
+    - Variables: camelCase
+    - Methods: PascalCase
+    - Constants: UPPER_SNAKE_CASE
+end note
+@enduml

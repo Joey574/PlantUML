@@ -1,0 +1,27 @@
+@startuml SequenceDesign
+actor User
+participant State
+participant Supervisor
+participant NeuralNetwork
+participant Dataset
+
+User -> State : Start(int argc, char* argv[])
+State -> State : Build()
+State -> Supervisor : Define(YAML::Node& config)
+Supervisor -> Dataset : LoadDataset(YAML::Node& config)
+Supervisor -> NeuralNetwork : Define(YAML::Node& config, Dataset& dataset)
+
+State -> State : InitializeSaveLocation()
+
+State -> State : Train()
+State -> Supervisor : Train(nlohmann::json& history)
+
+loop For each epoch <<e>>
+    Supervisor -> NeuralNetwork : Forward()
+    Supervisor -> NeuralNetwork : Backward()
+    Supervisor -> NeuralNetwork : Score()
+
+    Supervisor --> User : summary : string
+end
+
+Supervisor --> State : history : nlohmann::json

@@ -7,6 +7,9 @@ package "Supervisor" {
 
         - config : YAML::Node*
 
+        - path : string
+        - name : string
+
         + Supervisor()
         + ~Supervisor()
 

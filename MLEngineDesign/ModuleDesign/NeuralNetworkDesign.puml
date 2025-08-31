@@ -1,12 +1,17 @@
 @startuml NeuralNetwork
 struct NeuralNetwork {
+    - dataset : Dataset*
     - layers : vector<Layer>
 
     - YAML::Node* config
 
-    + Define(YAML::Node& config) : void
+    + Define(YAML::Node& config, Dataset& dataset) : void
 
     + Load() : void
     + Save() : void
+
+    + Forward() : void
+    + Backward() : void
+    + Score() : float
 }
 @enduml
