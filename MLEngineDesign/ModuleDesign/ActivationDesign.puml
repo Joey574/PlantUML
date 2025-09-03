@@ -10,21 +10,21 @@ package "Activation" {
         
         + <<inline>> ActivationType() const : ActivationType
 
-        {static} + ParseType(const string& name) : ActivationType
-        {static} + ParseName(ActivationType type) : string
+        + {static} ParseType(const string& name) : ActivationType
+        + {static} ParseName(ActivationType type) : string
 
-        {static} - Linear(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - Sigmoid(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - ReLU(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - LeakyReLU(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - ELU(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - Softmax(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} Linear(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} Sigmoid(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} ReLU(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} LeakyReLU(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} ELU(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} Softmax(const Tensor<float>& x, Tensor<float>& y) : void
 
-        {static} - LinearDerivative(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - SigmoidDerivative(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - ReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - LeakyReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
-        {static} - ELUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} LinearDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} SigmoidDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} ReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} LeakyReLUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
+        - {static} ELUDerivative(const Tensor<float>& x, Tensor<float>& y) : void
     }
 
     enum ActivationType {

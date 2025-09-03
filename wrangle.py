@@ -3,7 +3,9 @@ import argparse
 
 
 def cleanFile(data : str):
-    data = data[data.find('\n'):data.rfind('@')]
+    sidx = data.find('@startuml') + len('@startuml')
+    sidx = data.find('\n', sidx)
+    data = data[sidx:data.rfind('@enduml')]
     return data
 
 
