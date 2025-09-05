@@ -7,8 +7,10 @@ struct NeuralNetwork {
 
     + Define(YAML::Node& config, Dataset& dataset) : void
 
-    + Load() : void
-    + Save() : void
+    + Load(std::ifstream& file) : void
+    + Save(std::ofstream& file) const : void
+    + LoadOptimizers(std::ifstream& file) : void
+    + SaveOptimizers(std::ofstream& file) const : void
 
     + Forward() : void
     + Backward() : void

@@ -1,0 +1,57 @@
+@startuml RentalSequenceDesign
+actor User
+participant FrontEnd
+participant UserTable
+participant EquipmentTable
+participant WaiverTable
+
+== Intake Flow ==
+User -> FrontEnd : Intake(credentials)
+
+FrontEnd -> UserTable : FetchAndVerify(credentials)
+UserTable --> FrontEnd : userData
+
+FrontEnd -> FrontEnd : GenerateSkiProfile(credentials)
+
+FrontEnd -> WaiverTable : VerifyWaivers(credentials)
+WaiverTable --> FrontEnd : waiverData
+
+FrontEnd -> EquipmentTable : PastRentals(credentials)
+EquipmentTable --> FrontEnd : pastRentals
+
+FrontEnd --> User : userData
+
+
+== Equipment Rental Flow ==
+User -> FrontEnd : GetAvailableEquipment()
+
+FrontEnd -> EquipmentTable : GetAvailableEquipment()
+FrontEnd --> User : availableEquipment
+
+User -> FrontEnd : RentEquipment(credentials)
+
+FrontEnd -> UserTable : FetchAndVerify(credentials)
+UserTable --> FrontEnd : userData
+
+FrontEnd -> WaiverTable : VerifyWaivers(credentials)
+WaiverTable --> FrontEnd : waiverData
+
+FrontEnd -> EquipmentTable : TryRent(data)
+EquipmentTable --> FrontEnd : statusCode
+
+FrontEnd --> User : statusCode
+
+
+== Waiver Signing Flow ==
+User -> FrontEnd : UpdateWaivers(credentials, waiver)
+
+FrontEnd -> FrontEnd : VerifyWaiver(waiver)
+
+FrontEnd -> UserTable : FetchAndVerify(credentials)
+UserTable --> FrontEnd : userData
+
+FrontEnd -> WaiverTable : UpdateWaivers(credentials, waiver)
+WaiverTable --> FrontEnd : statusCode
+
+FrontEnd --> User : statusCode
+@enduml

@@ -8,6 +8,7 @@ participant Dataset
 User -> State : Start(int argc, char* argv[])
 State -> State : Build()
 State -> Supervisor : Define(YAML::Node& config)
+
 Supervisor -> Dataset : LoadDataset(YAML::Node& config)
 Supervisor -> NeuralNetwork : Define(YAML::Node& config, Dataset& dataset)
 
@@ -16,12 +17,21 @@ State -> State : InitializeSaveLocation()
 State -> State : Train()
 State -> Supervisor : Train(nlohmann::json& history)
 
+Supervisor -> NeuralNetwork : LoadOptimizers(std::ofstream& file)
 loop For each epoch <<e>>
     Supervisor -> NeuralNetwork : Forward()
     Supervisor -> NeuralNetwork : Backward()
-    Supervisor -> NeuralNetwork : Score()
+
+    alt every n epochs
+        Supervisor -> NeuralNetwork : Score()
+    end
+
+    alt on best score
+        Supervisor -> NeuralNetwork : Save(std::ofstream& file)
+    end
 
     Supervisor --> User : summary : string
 end
+Supervisor -> NeuralNetwork : SaveOptimizers(std::ofstream& file)
 
 Supervisor --> State : history : nlohmann::json
