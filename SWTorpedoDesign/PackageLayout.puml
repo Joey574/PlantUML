@@ -2,7 +2,10 @@
 
 actor User
 participant Controller
+participant LoadBalancer1
+participant LoadBalancer2
 participant Torpedo
+
 
 == Connect & Capability Exchange ==
 User -> Controller : Search()
@@ -10,6 +13,7 @@ Controller -> Torpedo : Broadcast(question)
 Torpedo --> Controller : Answer(id, answer, key)
 Controller -> Torpedo : Syn(id, uof)
 Torpedo --> Controller : Ack(id, uof)
+
 
 == Control -> Torpedo message formats ==
 User -> Controller : UpdateTarget
@@ -29,14 +33,30 @@ Controller -> Torpedo : ChangeFrq(type=4, frq=n)
 Torpedo --> Controller : CurrentPos(type=1, x=n, y=n, z=n, hdg=n)
 
 
+== Controller -> LoadBalancer message formats ==
+Controller -> LoadBalancer1 : AssignTorpedo(type=1, id=n, key=n, uof=n)
+
+
 == General Flow ==
+User -> Controller : Search
+Controller -> Torpedo : Connect & Capability Exchange
+
+Controller -> LoadBalancer1 : AssignTorpedo
+Controller -> LoadBalancer2 : AssignTorpedo
+
 alt EveryNTicks
-    Controller -> Torpedo : UpdateTarget
-    Torpedo --> Controller : CurrentPos
+    LoadBalancer1 -> Torpedo : UpdateTarget
+    Torpedo --> LoadBalancer1 : CurrentPos
+
+    LoadBalancer2 -> Torpedo : UpdateTarget
+    Torpedo --> LoadBalancer2 : CurrentPos
 end
 
 alt WithinProx
         Torpedo -> : Detonate
 end
+
+Controller -> Torpedo : UserCommands
+Torpedo --> Controller : CurrentPos
 
 @enduml
