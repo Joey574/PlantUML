@@ -1,0 +1,42 @@
+@startuml PackageLayout
+
+actor User
+participant Controller
+participant Torpedo
+
+== Connect & Capability Exchange ==
+User -> Controller : Search()
+Controller -> Torpedo : Broadcast(question)
+Torpedo --> Controller : Answer(id, answer, key)
+Controller -> Torpedo : Syn(id, uof)
+Torpedo --> Controller : Ack(id, uof)
+
+== Control -> Torpedo message formats ==
+User -> Controller : UpdateTarget
+Controller -> Torpedo : UpdateTarget(type=1, x=n, y=n, z=n)
+
+User -> Controller : ChangeProx
+Controller -> Torpedo : ChangeProx(type=2, prox=n)
+
+User -> Controller : Detonate
+Controller -> Torpedo : Detonate(type=3)
+
+User -> Controller : ChangeFrq
+Controller -> Torpedo : ChangeFrq(type=4, frq=n)
+
+
+== Torpedo -> Control message formats ==
+Torpedo --> Controller : CurrentPos(type=1, x=n, y=n, z=n, hdg=n)
+
+
+== General Flow ==
+alt EveryNTicks
+    Controller -> Torpedo : UpdateTarget
+    Torpedo --> Controller : CurrentPos
+end
+
+alt WithinProx
+        Torpedo -> : Detonate
+end
+
+@enduml
