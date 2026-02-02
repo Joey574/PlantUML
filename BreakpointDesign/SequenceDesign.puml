@@ -1,0 +1,42 @@
+@startuml Sequence
+
+actor User
+participant EntryPoint
+participant Breakpoint
+participant Recon
+participant Module
+participant Logger
+participant Network
+participant Database
+participant FileSystem
+
+User -> EntryPoint : Opts
+' Our entrypoint here should be fairly simple to allow for both a stable api and cli
+
+EntryPoint -> Breakpoint : Opts
+Breakpoint -> Logger : Opts
+Logger -> FileSystem : Opts
+
+' This will define our general flow for recon and mapping endpoints
+Breakpoint -> Recon : Opts
+Recon -> Network : Request
+Network --> Recon : Response
+Recon -> Logger : Request, Response
+Logger -> Database : Request, Response
+Recon --> Breakpoint : Endpoints
+
+' This will be our general flow we follow with our modules
+Breakpoint -> Module : Opts, Endpoints
+Module -> Network : Request
+Network --> Module : Response
+Module -> Logger : Request, Response
+Logger -> Database : Request, Response
+Module --> Breakpoint : Report
+Breakpoint -> Logger : Report
+Logger -> Database : Report
+Logger -> FileSystem : Report
+Logger --> User : Report
+
+
+
+@enduml

@@ -1,0 +1,44 @@
+@startwbs TeamComp
+title PRCCDC - Team Composition
+
+* **1x Team Lead (Captain)**
+** **Command & Strategy (owned by Captain)**
+*** Escalation point for Specialists
+*** Final Review of all Injects/Reports
+*** Incident Command & Crisis Management
+*** Resource Allocation & External Comms
+*** Monitoring overall Scoreboard/Uptime
+
+** **1x Windows Specialist**
+*** Escalation point for Windows issues / active threats
+*** Escalates to Captain
+*** Owns immediate response and coordination for attacks
+
+** **1x Linux Specialist**
+*** Escalation point for Linux issues / active threats
+*** Escalates to Captain
+*** Owns immediate response and coordination for attacks
+
+** **1x Networking Specialist**
+*** Escalation point for network issues
+*** Specializes in firewalls and router protection
+*** Conducts continuous monitoring 
+
+** **2x Damage Control (DC)**
+*** Escalation point for active threats
+*** Escalates to Specialists
+*** Reacts to active threats
+*** Writes reports for compromised PII
+*** Supports IS
+
+** **5x Infrastructure Security (IS)**
+*** Escalates to Specialists
+*** Hardens machines and services
+*** Conducts continuous monitoring
+*** Reports incidents to DC
+
+** **1x Customer Support**
+*** Escalates to Captain
+*** Handles customer requests
+*** Handles CEO requests
+@endwbs

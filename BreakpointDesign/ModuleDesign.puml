@@ -1,0 +1,102 @@
+@startuml Breakpoint
+
+
+package "Breakpoint" {
+    struct config {
+        + Recon.config
+        + Module.config
+        + Logger.config
+        + Network.config
+        + Database.config
+        + FileSystem.config
+    }
+
+    struct breakpoint {
+        + Start() error
+        + config
+
+        - Recon.recon
+        - Network.net
+        - Logger.logger
+        - Module.module
+        - Database.db
+        - FileSystem.fs
+    }
+}
+
+package "Recon" {
+    struct config {
+        + TargetURL
+        + TargetFile
+        + Scope
+    }
+
+    struct recon {
+        + Enumerate(ctx, config) --> []Endpoint, error
+        + Network.net
+        + Logger.logger
+    }
+}
+
+package "Module" {
+    struct config {
+        // Options would be mostly interface dependent
+        // but some common ones may include
+        + extract
+    }
+
+    interface module {
+        + Name()
+        + Description()
+        + Execute(ctx, config, []Endpoint) --> Report, error
+    }
+}
+
+package "Logger" {
+    struct config {
+        + NoColor
+    }
+
+    struct logger {
+        + config
+        + polocy
+        + Storage.sink
+
+        + LogTransaction(request, response)
+        + LogReport(report)
+        + LogConfig(config)
+    }
+
+    struct policy {
+        + config
+    }
+}
+
+package "Network" {
+    struct config {
+        + Proxy
+    }
+
+    interface "net" {
+
+    }
+}
+
+package "Storage" {
+    interface "sink" {
+        + LogTransaction(request, response)
+        + LogReport(report)
+        + LogConfig(config)
+    }
+}
+
+
+Breakpoint --> Recon
+Breakpoint --> Module
+Breakpoint --> Logger
+
+Recon --> Network
+Module --> Network
+
+Logger --> Storage
+@enduml
